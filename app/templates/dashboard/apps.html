@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Aplicações conectadas</h2>
+    {% if consents %}
+      <div class="info-cards">
+        {% for c in consents %}
+          <div class="info-card">
+            <div class="info-card-content">
+              <p><strong>Client ID:</strong> {{ c.client_id }}</p>
+              <p><strong>Escopos:</strong> {{ c.scope }}</p>
+              <form method="POST" action="{{ url_for('dashboard.revoke_consent', consent_id=c.id) }}" style="margin-top:8px">
+                <button class="btn btn-accent">Revogar acesso</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="checker-container"><p>Nenhuma aplicação conectada.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

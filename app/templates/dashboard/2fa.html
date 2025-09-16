@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Configurar 2FA</h2>
+    <div class="checker-container" style="max-width:720px">
+      {% if has_2fa %}
+        <p>O 2FA está <strong>ativado</strong> na sua conta. Para desativar, confirme com seu código atual:</p>
+        <form method="POST" class="form" style="margin-top:1rem">
+          <input type="hidden" name="action" value="disable" />
+          <div class="form-group">
+            <label>Código 2FA</label>
+            <input name="token" type="text" maxlength="6" placeholder="000000" />
+          </div>
+          <button class="btn btn-accent">Desativar 2FA</button>
+        </form>
+      {% else %}
+        <p>Ative o 2FA para adicionar uma camada extra de segurança à sua conta.</p>
+        <ol style="margin:1rem 0 1.2rem 1.2rem;color:#a7b0c0">
+          <li>Abra seu app autenticador (Google Authenticator, Microsoft Authenticator, Authy, etc.).</li>
+          <li>Escaneie o QR Code abaixo.</li>
+          <li>Digite o código de 6 dígitos para confirmar.</li>
+        </ol>
+        <div style="background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;padding:1rem;margin:1rem 0">
+          <h4 style="margin:0 0 0.5rem 0;color:#495057">Apps Recomendados:</h4>
+          <ul style="margin:0;color:#6c757d">
+            <li><strong>Google Authenticator</strong> - Disponível para Android e iOS</li>
+            <li><strong>Microsoft Authenticator</strong> - Disponível para Android e iOS</li>
+            <li><strong>Authy</strong> - Disponível para Android, iOS e Desktop</li>
+          </ul>
+        </div>
+        {% if qr_data_uri %}
+          <div style="display:flex;justify-content:center;margin:1rem 0">
+            <img src="{{ qr_data_uri }}" alt="QR Code 2FA" style="background:#fff;border-radius:8px;padding:8px" />
+          </div>
+        {% endif %}
+        <form method="POST" class="form" style="margin-top:1rem">
+          <input type="hidden" name="action" value="enable" />
+          <div class="form-group">
+            <label>Código 2FA</label>
+            <input name="token" type="text" maxlength="6" placeholder="000000" />
+          </div>
+          <button class="btn">Ativar 2FA</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Conceder acesso</h2>
+<p>O aplicativo <strong>{{ client.name }}</strong> solicita acesso: <em>{{ scope }}</em></p>
+<form method="POST" class="form row">
+  <button name="decision" value="approve" class="btn primary">Permitir</button>
+  <button name="decision" value="deny" class="btn">Negar</button>
+</form>
+{% endblock %}

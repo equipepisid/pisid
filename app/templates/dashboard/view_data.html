@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Seus dados</h2>
+    <div class="checker-container">
+      <ul class="list" style="list-style:none;padding:0;display:grid;gap:8px">
+        <li><strong>Nome completo:</strong> {{ data.full_name }}</li>
+        <li><strong>CPF:</strong> {{ data.cpf }}</li>
+        <li><strong>Data de nascimento:</strong> {{ data.birthdate }}</li>
+        <li><strong>Telefone:</strong> {{ data.phone }}</li>
+        <li><strong>Endereço:</strong> {{ data.address }}</li>
+        <li><strong>Hash de integridade:</strong> {{ data.integrity_hash }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

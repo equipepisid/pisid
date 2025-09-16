@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Verifique seu e-mail</h2>
+    <div class="checker-container" style="max-width:520px">
+      <p>Enviamos um código de 6 dígitos para <strong>{{ email }}</strong>.</p>
+      <form method="POST" class="form" style="margin-top:1rem">
+        <div class="form-group">
+          <label>Código</label>
+          <input name="code" type="text" maxlength="6" placeholder="000000" />
+        </div>
+        <button class="btn">Confirmar</button>
+      </form>
+      <div style="margin-top:12px">
+        <button id="resend" class="btn btn-accent" type="button">Reenviar código</button>
+        <span id="res-status" style="margin-left:8px;color:#a7b0c0"></span>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+const btn=document.getElementById('resend');
+const res=document.getElementById('res-status');
+if(btn){
+  btn.addEventListener('click', async ()=>{
+    res.textContent='Enviando...';
+    try{
+      const r = await fetch('{{ url_for('auth.resend_code') }}', {method:'POST'});
+      const j = await r.json();
+      if(j.status==='ok'){ res.textContent='Código reenviado.'; }
+      else{ res.textContent=j.message || 'Erro ao reenviar.'; }
+    }catch(e){ res.textContent='Erro ao reenviar.'; }
+  });
+}
+</script>
+{% endblock %}

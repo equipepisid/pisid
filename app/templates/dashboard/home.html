@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Dashboard</h2>
+    <p style="text-align:center;margin-bottom:1rem">Gerencie seus dados sensíveis e configurações de segurança.</p>
+    <div class="info-cards">
+      <a class="info-card" href="{{ url_for('dashboard.manage_data') }}"><div class="info-card-content"><h3>📝 Dados</h3><p>Gerenciar dados sensíveis</p></div></a>
+      <a class="info-card" href="{{ url_for('dashboard.view_data') }}"><div class="info-card-content"><h3>🔎 Visualizar</h3><p>Ver dados descriptografados</p></div></a>
+      <a class="info-card" href="{{ url_for('dashboard.oauth_consents') }}"><div class="info-card-content"><h3>🔗 Aplicações</h3><p>Gerenciar acessos conectados</p></div></a>
+      <a class="info-card" href="{{ url_for('dashboard.twofa_settings') }}"><div class="info-card-content"><h3>🔐 2FA</h3><p>Ativar ou desativar 2FA</p></div></a>
+    </div>
+  </div>
+</section>
+{% endblock %}

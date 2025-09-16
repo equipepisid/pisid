@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Criar conta</h2>
+    <div class="checker-container" style="max-width:640px">
+      <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>Email</label>
+          {{ form.email(size=32) }}
+        </div>
+        <div class="form-group">
+          <label>Confirmar Email</label>
+          {{ form.confirm_email(size=32) }}
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          {{ form.password(size=32) }}
+        </div>
+        <div class="form-group">
+          <label>Confirmar Senha</label>
+          {{ form.confirm_password(size=32) }}
+        </div>
+        {{ form.submit(class="btn") }}
+      </form>
+      <p style="margin-top:1rem">Já possui conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

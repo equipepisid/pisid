@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Dados Sensíveis</h2>
+    <div class="checker-container">
+      <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group"><label>Nome completo</label>{{ form.full_name(size=40) }}</div>
+        <div class="form-group"><label>CPF</label>{{ form.cpf(size=20) }}</div>
+        <div class="form-group"><label>Data de nascimento</label>{{ form.birthdate() }}</div>
+        <div class="form-group"><label>Telefone</label>{{ form.phone(size=20) }}</div>
+        <div class="form-group"><label>Endereço</label>{{ form.address(size=60) }}</div>
+        {{ form.submit(class="btn") }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

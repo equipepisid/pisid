@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <h1>Proteja seus dados pessoais com o PISID</h1>
+    <p>Uma solução para evitar vazamentos de informações sensíveis e garantir sua privacidade online com identificadores únicos e segurança avançada.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn">Comece Agora</a>
+    <a href="#verificador" class="btn btn-accent">Verifique seus dados</a>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="container">
+    <h2 class="section-title">Sobre o PISID</h2>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-card-content">
+        <h3><i>🔐</i> Proteção de Dados</h3>
+        <p>Cadastre-se em aplicativos e sites sem expor seus dados, usando um identificador único seguro.</p>
+      </div></div>
+      <div class="info-card"><div class="info-card-content">
+        <h3><i>⚡</i> Autenticação Segura</h3>
+        <p>Suporte a 2FA (TOTP) e melhores práticas de segurança para máxima proteção.</p>
+      </div></div>
+      <div class="info-card"><div class="info-card-content">
+        <h3><i>🌐</i> Privacidade</h3>
+        <p>Dados criptografados com AES-GCM e controle total sobre acessos de terceiros.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="estatisticas" class="light">
+  <div class="container">
+    <h2 class="section-title">Vazamentos de Dados no Brasil</h2>
+    <div class="stats-container">
+      <div class="stat-card"><div class="stat-number">+223 mi</div><div class="stat-label"> Brasileiros afetados (2021)</div></div>
+      <div class="stat-card"><div class="stat-number">R$ 5 bi</div><div class="stat-label">Prejuízos anuais</div></div>
+      <div class="stat-card"><div class="stat-number">+500</div><div class="stat-label">Vazamentos diarios (2023)</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="verificador">
+  <div class="container">
+    <h2 class="section-title">Verifique se seus dados vazaram</h2>
+    <div class="checker-container">
+      <div class="form-group">
+        <label for="data-input">Digite seu e-mail, CPF ou nome completo</label>
+        <input type="text" id="data-input" placeholder="exemplo@email.com ou 123.456.789-00">
+      </div>
+      <button class="btn" onclick="checkData()">Verificar Agora</button>
+      
+      <div id="loading" class="result-container" style="display:none;background:#f8f9fa;border:1px solid #dee2e6">
+        <h3>🔍 Verificando...</h3>
+        <p>Pesquisando seus dados em nossa base de vazamentos conhecidos...</p>
+      </div>
+      
+      <div id="result-safe" class="result-container result-safe">
+        <h3>✅ Seus dados estão seguros!</h3>
+        <p>Não encontramos seus dados em nossos registros de vazamentos conhecidos.</p>
+        <p><strong>Tipo de dado:</strong> <span id="safe-data-type"></span></p>
+      </div>
+      
+      <div id="result-leaked" class="result-container result-leaked">
+        <h3>⚠️ Seus dados foram vazados!</h3>
+        <p>Encontramos seus dados em <span id="leak-count">1</span> vazamento(s) conhecido(s).</p>
+        <p><strong>Tipo de dado:</strong> <span id="leaked-data-type"></span></p>
+        
+        <div style="margin:1rem 0">
+          <h4>Vazamentos encontrados:</h4>
+          <ul id="leak-details" style="margin:0.5rem 0;padding-left:1.5rem"></ul>
+        </div>
+        
+        <div style="margin:1rem 0">
+          <h4>Recomendações de segurança:</h4>
+          <ul id="recommendations" style="margin:0.5rem 0;padding-left:1.5rem"></ul>
+        </div>
+        
+        <p style="margin-top:1rem">
+          <strong>Recomendamos que você se cadastre no PISID para proteger suas informações.</strong>
+          <a href="{{ url_for('auth.register') }}" class="btn" style="margin-left:0.5rem">Cadastrar-se</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="como-funciona" class="how-it-works">
+  <div class="container">
+    <h2 class="section-title">Como o PISID Funciona</h2>
+    <div class="steps">
+      <div class="step"><div class="step-number">1</div><h3>Cadastre-se</h3><p>Crie sua conta com 2FA opcional</p></div>
+      <div class="step"><div class="step-number">2</div><h3>Proteja</h3><p>Armazene informações com criptografia</p></div>
+      <div class="step"><div class="step-number">3</div><h3>Gere IDs</h3><p>Crie identificadores únicos</p></div>
+      <div class="step"><div class="step-number">4</div><h3>Navegue</h3><p>Faça login sem expor dados</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+async function checkData() {
+  const input = document.getElementById('data-input').value.trim();
+  if (!input) {
+    alert('Por favor, digite algum dado para verificar.');
+    return;
+  }
+  
+  // Esconder resultados anteriores e mostrar loading
+  document.getElementById('result-safe').style.display = 'none';
+  document.getElementById('result-leaked').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  
+  try {
+    const response = await fetch('/api/check-leak', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data: input })
+    });
+    
+    const result = await response.json();
+    
+    // Esconder loading
+    document.getElementById('loading').style.display = 'none';
+    
+    if (result.error) {
+      alert('Erro na verificação: ' + result.error);
+      return;
+    }
+    
+    // Mapear tipos de dados para português
+    const dataTypes = {
+      'email': 'E-mail',
+      'cpf': 'CPF',
+      'name': 'Nome'
+    };
+    
+    if (result.leaked) {
+      // Mostrar resultado de vazamento
+      document.getElementById('result-leaked').style.display = 'block';
+      document.getElementById('leak-count').textContent = result.leaks.length;
+      document.getElementById('leaked-data-type').textContent = dataTypes[result.data_type] || result.data_type;
+      
+      // Mostrar detalhes dos vazamentos
+      const leakDetails = document.getElementById('leak-details');
+      leakDetails.innerHTML = result.leaks.map(leak => 
+        `<li>${leak}</li>`
+      ).join('');
+      
+      // Mostrar recomendações
+      const recommendations = document.getElementById('recommendations');
+      recommendations.innerHTML = result.recommendations.map(rec => 
+        `<li>${rec}</li>`
+      ).join('');
+      
+    } else {
+      // Mostrar resultado seguro
+      document.getElementById('result-safe').style.display = 'block';
+      document.getElementById('safe-data-type').textContent = dataTypes[result.data_type] || result.data_type;
+    }
+    
+  } catch (error) {
+    document.getElementById('loading').style.display = 'none';
+    alert('Erro na verificação. Tente novamente.');
+    console.error('Erro:', error);
+  }
+}
+
+// Adicionar listener para Enter
+const el = document.getElementById('data-input');
+if (el) {
+  el.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+      checkData();
+    }
+  });
+}
+
+// Esconder resultados inicialmente
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('result-safe').style.display = 'none';
+  document.getElementById('result-leaked').style.display = 'none';
+});
+</script>
+{% endblock %}

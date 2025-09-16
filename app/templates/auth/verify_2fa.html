@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container">
+    <h2 class="section-title">Verificação 2FA</h2>
+    <div class="checker-container" style="max-width:520px">
+      <form method="POST" class="form">
+        <div class="form-group">
+          <label>Código 2FA</label>
+          <input name="token" type="text" maxlength="6" placeholder="000000" />
+        </div>
+        <button class="btn">Confirmar</button>
+      </form>
+      <p style="margin-top:1rem;color:#a7b0c0">Ative o 2FA no seu painel do usuário.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+
+
